@@ -88,7 +88,7 @@ services:
           name: urjanet-api
           property: url
 
-  # 4. The Scheduled Job
+  # 5. The Scheduled Job (Fixed)
   - type: cron
     name: adaptive-scheduler
     env: shell
@@ -104,3 +104,4 @@ services:
           type: web
           name: urjanet-api
           property: url
+
