@@ -8,8 +8,8 @@ databases:
     region: ohio
 
 services:
-  # 1. The Backend FastAPI API
   - type: web
+    # 1. The Backend FastAPI API
     name: urjanet-api
     env: docker
     repo: https://github.com/Nikunj2608/Smart-EMS-.git
@@ -104,4 +104,5 @@ services:
     envVars:
       - key: URJANET_API_TOKEN
         sync: false
+
 
