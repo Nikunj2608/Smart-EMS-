@@ -97,8 +97,11 @@ services:
     region: ohio
     schedule: "0 * * * *"
     plan: free
-    command: >
-      curl -f -H "Authorization: Bearer ${URJANET_API_TOKEN}" http://urjanet-api:10000/api/system/recommendation
+    
+  plan: free
+  startCommand: > # CORRECTED: Use 'startCommand'
+          curl -f -H "Authorization: Bearer ${URJANET_API_TOKEN}" http://urjanet-api:10000/api/system/recommendation
     envVars:
       - key: URJANET_API_TOKEN
         sync: false
+
