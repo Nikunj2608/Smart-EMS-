@@ -1,5 +1,5 @@
-# This is the structurally correct and final version.
-# Note that 'databases' is now its own section at the top.
+# This file defines all the services for your project on Render.
+# Render will automatically create and deploy everything when you push this to your Git repo.
 
 databases:
   - name: urjanet-db
@@ -8,8 +8,8 @@ databases:
     region: ohio
 
 services:
+  # 1. The Backend FastAPI API
   - type: web
-    # 1. The Backend FastAPI API
     name: urjanet-api
     env: docker
     repo: https://github.com/Nikunj2608/Smart-EMS-.git
@@ -23,7 +23,6 @@ services:
         fromDatabase:
           name: urjanet-db
           property: internalConnectionString
-      # ALL secrets below must be added in the Render Dashboard
       - key: INFLUXDB_URL
         sync: false
       - key: INFLUXDB_TOKEN
@@ -56,7 +55,6 @@ services:
         fromDatabase:
           name: urjanet-db
           property: internalConnectionString
-      # ALL secrets below must be added in the Render Dashboard
       - key: INFLUXDB_URL
         sync: false
       - key: INFLUXDB_TOKEN
@@ -90,20 +88,19 @@ services:
           name: urjanet-api
           property: url
 
-  # 4. The Scheduled Job (Corrected)
+  # 4. The Scheduled Job
   - type: cron
     name: adaptive-scheduler
     env: shell
     region: ohio
     schedule: "0 * * * *"
     plan: free
-    
-  plan: free
-  startCommand: > # CORRECTED: Use 'startCommand'
-          curl -f -H "Authorization: Bearer ${URJANET_API_TOKEN}" http://urjanet-api:10000/api/system/recommendation
+    startCommand: curl -f -H "Authorization: Bearer ${URJANET_API_TOKEN}" "${RENDER_EXTERNAL_URL}/api/system/recommendation"
     envVars:
       - key: URJANET_API_TOKEN
         sync: false
-
-
-
+      - key: RENDER_EXTERNAL_URL
+        fromService:
+          type: web
+          name: urjanet-api
+          property: url
